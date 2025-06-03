@@ -14,7 +14,75 @@
         <h1>Medicine Tracker</h1>
     </header>
     <main>
+        <div class="form-container">
+            
+            <!-- Search Medicine Form -->
+            <h2>Search Medicine</h2>
+            <form id="search-medicine-form" action="" method="GET" onsubmit="event.preventDefault(); searchMedicine();"></form>
+                <label for="search-medicine">Medicine Name:</label>
+                <input type="text" id="search-medicine" name="name" placeholder="Enter Medicine Name Here" required>
+                <button type="submit">Search</button>
+            </form>
+            <script>
+            function searchMedicine() {
+                const name = document.getElementById('search-medicine').value;
+                fetch(`http://0.0.0.0:8000/medicines/${encodeURIComponent(name)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(`Medicine: ${data.name}\nPrice: ${data.price}`);
+                    })
+                    .catch(error => {
+                        alert('Medicine not found.');
+                    });
+            }
+            </script>
 
+            <!-- Update Medicine Form -->
+            <h2>Update Medicine Price</h2>
+            <form id="update-medicine-form" action = "http://0.0.0.0:8000/update" method="POST">
+                <label for="medicine-id">Medicine ID:</label>
+                <input type="text" id="medicine-id" name="medicine-id" placeholder="Enter Medicine ID Here" required>
+                
+                <label for="new-price">New Price:</label>
+                <input type="number" id="new-price" name="new-price" required>
+                
+                <button type="submit">Update Price</button>
+            </form>
+
+            <!-- Create Medicine Form -->
+            <h2>Add New Medicine</h2>
+            <form id="create-medicine-form" action = "http://0.0.0.0:8000/medicines" method="POST">
+                <label for="medicine-name">Medicine Name:</label>
+                <input type="text" id="medicine-name" name="medicine-name" placeholder="Enter Medicine Name Here" required>
+                
+                <label for="medicine-price">Price:</label>
+                <input type="number" id="medicine-price" name="medicine-price" required>
+                
+                <button type="submit">Add Medicine</button>
+            </form>
+
+            <!-- Delete Medicine Form -->
+            <h2>Delete Medicine</h2>
+            <form id="delete-medicine-form" action = "http://0.0.0.0:8000/delete" method="POST">
+                <label for="delete-medicine-id">Medicine Name:</label>
+                <input type="text" id="delete-medicine-id" name="delete-medicine-id" placeholder="Enter Medicine Name Here" required>
+                
+                <button type="submit">Delete Medicine</button>
+            </form>
+
+        </div>
+        <div class="medicines-list">
+            <h2>Current Medicines List</h2>
+            <ul id="medicines"></ul>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof getMeds === 'function') {
+                    getMeds('medicines');
+                }
+            });
+            </script>
+        </div>
+        
     </main>
     <script src="script.js"></script>
 </body>
