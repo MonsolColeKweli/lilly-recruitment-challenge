@@ -20,7 +20,7 @@
             <h2>Search Medicine</h2>
             <form id="search-medicine-form" action="" method="GET" onsubmit="event.preventDefault(); searchMedicine();"></form>
                 <label for="search-medicine">Medicine Name:</label>
-                <input type="text" id="search-medicine" name="name" placeholder="Enter Medicine Name Here" required>
+                <input type="text" id="search-medicine" name="med-to-search" placeholder="Enter Medicine Name Here" required>
                 <button type="submit">Search</button>
             </form>
             <script>
@@ -39,24 +39,49 @@
 
             <!-- Update Medicine Form -->
             <h2>Update Medicine Price</h2>
-            <form id="update-medicine-form" action = "http://0.0.0.0:8000/update" method="POST">
-                <label for="medicine-id">Medicine ID:</label>
-                <input type="text" id="medicine-id" name="medicine-id" placeholder="Enter Medicine ID Here" required>
+            <form id="update-medicine-form" action="http://0.0.0.0:8000/update" method="POST" onsubmit="event.preventDefault(); updateMedicine();">
+                <label for="update-med-ID">Medicine Name:</label>
+                <input type="text" id="update-med-ID" name="name" placeholder="Enter Medicine Name Here" required>
                 
-                <label for="new-price">New Price:</label>
-                <input type="number" id="new-price" name="new-price" required>
+                <label for="update-new-price">New Price:</label>
+                <input type="number" id="update-new-price" name="price" required>
                 
                 <button type="submit">Update Price</button>
             </form>
+            <script>
+            function updateMedicine() {
+                const name = document.getElementById('update-med-ID').value;
+                const price = document.getElementById('update-new-price').value;
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('price', price);
 
-            <!-- Create Medicine Form -->
+                fetch('http://0.0.0.0:8000/update', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                    } else if (data.error) {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => {
+                    alert('Error updating medicine.');
+                });
+            }
+            </script>
+
+            <!-- Create Medicine Form - Incomplete-->
             <h2>Add New Medicine</h2>
             <form id="create-medicine-form" action = "http://0.0.0.0:8000/medicines" method="POST">
                 <label for="medicine-name">Medicine Name:</label>
                 <input type="text" id="medicine-name" name="medicine-name" placeholder="Enter Medicine Name Here" required>
                 
                 <label for="medicine-price">Price:</label>
-                <input type="number" id="medicine-price" name="medicine-price" required>
+                <input type="number" id="medicine-price" name="medicine-price" placeholder="Enter Price Here" required>
                 
                 <button type="submit">Add Medicine</button>
             </form>
