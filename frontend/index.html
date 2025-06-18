@@ -18,6 +18,7 @@
     <header class="text-center" id="header">
         <h1>Medicine Tracker</h1>
     </header>
+    
     <main>
         <nav class="navbar navbar-expand-lg" style="background-color: #444; border-radius: 12px; margin: 24px auto; max-width: 600px;">
             <div class="container-fluid justify-content-center">
@@ -66,7 +67,7 @@
                     <div class="card shadow w-100">
                         <div class="card-body">
                             <h5 class="card-title">Update Medicine Price</h5>
-                            <form id="update-medicine-form" action="http://0.0.0.0:8000/update" method="POST" onsubmit="event.preventDefault(); updateMedicine();">
+                            <form id="update-medicine-form" action="" method="POST" onsubmit="event.preventDefault(); updateMedicine();">
                                 <div class="mb-3">
                                     <label for="update-med-ID" class="form-label">Medicine Name:</label>
                                     <input type="text" class="form-control" id="update-med-ID" name="name" placeholder="Enter Medicine Name Here" required>
@@ -85,7 +86,7 @@
                     <div class="card shadow w-100">
                         <div class="card-body">
                             <h5 class="card-title">Add New Medicine</h5>
-                            <form id="create-medicine-form" action="http://0.0.0.0:8000/medicines" method="POST">
+                            <form id="create-medicine-form" action="http://localhost:8000/medicines" method="POST">
                                 <div class="mb-3">
                                     <label for="medicine-name" class="form-label">Medicine Name:</label>
                                     <input type="text" class="form-control" id="medicine-name" name="medicine-name" placeholder="Enter Medicine Name Here" required>
@@ -104,7 +105,7 @@
                     <div class="card shadow w-100">
                         <div class="card-body">
                             <h5 class="card-title">Delete Medicine</h5>
-                            <form id="delete-medicine-form" action="http://0.0.0.0:8000/delete" method="POST">
+                            <form id="delete-medicine-form" action="http://localhost:8000/delete" method="DELETE">
                                 <div class="mb-3">
                                     <label for="delete-medicine-id" class="form-label">Medicine Name:</label>
                                     <input type="text" class="form-control" id="delete-medicine-id" name="delete-medicine-id" placeholder="Enter Medicine Name Here" required>
