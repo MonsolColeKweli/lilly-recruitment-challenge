@@ -86,14 +86,14 @@
                     <div class="card shadow w-100">
                         <div class="card-body">
                             <h5 class="card-title">Add New Medicine</h5>
-                            <form id="create-medicine-form" action="http://localhost:8000/medicines" method="POST">
+                            <form id="create-medicine-form" action="" method="POST" onsubmit="event.preventDefault(); createMedicine();">
                                 <div class="mb-3">
-                                    <label for="medicine-name" class="form-label">Medicine Name:</label>
-                                    <input type="text" class="form-control" id="medicine-name" name="medicine-name" placeholder="Enter Medicine Name Here" required>
+                                    <label for="medicine-name-create" class="form-label">Medicine Name:</label>
+                                    <input type="text" class="form-control" id="medicine-name-create" name="medicine-name-create" placeholder="Enter Medicine Name Here" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="medicine-price" class="form-label">Price:</label>
-                                    <input type="number" class="form-control" id="medicine-price" name="medicine-price" placeholder="Enter Price Here" required>
+                                    <label for="medicine-price-create" class="form-label">Price:</label>
+                                    <input type="number" step = "0.01" class="form-control" id="medicine-price-create" name="medicine-price-create" placeholder="Enter Price Here" required>
                                 </div>
                                 <button type="submit" class="btn btn-success w-100">Add Medicine</button>
                             </form>

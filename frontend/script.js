@@ -51,18 +51,35 @@ async function getMeds() {
 
 }
 
+// funciton to search json data for matching medicine from user form
 function searchMedicine() {
-            const name = document.getElementById('search-medicine').value;
-            fetch(`http://0.0.0.0:8000/medicines/${encodeURIComponent(name)}`)
-                .then(response => response.json())
-                .then(data => {
-                    alert(`Medicine: ${data.name}\nPrice: ${data.price}`);
-                })
-                .catch(error => {
-                    alert('Medicine not found.');
-                });
+const name = document.getElementById('search-medicine').value;
+
+// retrieve response then 
+fetch(`http://localhost:8000/medicines/${encodeURIComponent(name)}`)
+    .then(response => response.json())
+    .then(data => {
+        if (!data || !data.name || data.name == "") {
+            if(data.name == "") {console.error('Null Item', item.name, item.price);}
+            else {console.error("No item found in data", name)}
+
+            alert('Medicine not found.');
+            return;
+        }
+        // Assuming medicine name found but has no price
+        if(data.price == null){
+            alert(`Medice: ${data.name} -- NO PRICE INFORMATION FOUND`)
         }
 
+        // Assuming safe, parse data and give alert with answer
+        alert(`Medicine: ${data.name}\nPrice: ${data.price}`);
+    })
+    .catch(error => {
+        alert('Medicine not found.');
+    });
+}
+
+// function to update medicine information in json file
 function updateMedicine() {
     const name = document.getElementById('update-med-ID').value;
     const price = document.getElementById('update-new-price').value;
@@ -70,6 +87,7 @@ function updateMedicine() {
     formData.append('name', name);
     formData.append('price', price);
 
+    //get response
     fetch('http://localhost:8000/update', {
         method: 'POST',
         body: formData
@@ -85,6 +103,36 @@ function updateMedicine() {
     .catch(error => {
         alert('Error updating medicine.');
     });
+}
+// create med
+async function createMedicine(params) {
+    const name = document.getElementById('medicine-name-create').value;
+    const price = document.getElementById('medicine-price-create').value;
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+
+    //get response
+    fetch('http://localhost:8000/create', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+        } else if (data.error) {
+            alert(data.error);
+        }
+    })
+    .catch(error => {
+        alert('Error adding medicine.');
+    });
+}
+
+// average funciton
+async function avgCalc(){
+
 }
 
 document.addEventListener('DOMContentLoaded', function() {
