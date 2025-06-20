@@ -1,4 +1,5 @@
 
+// function to retrieve data propagate list
 async function getMeds() {
     try {
         // Fetch the list of medicines from the backend
@@ -16,6 +17,8 @@ async function getMeds() {
         console.log(data);
         console.log(data.medicines);
         
+        const list = document.getElementById('medicines');
+        list.innerHTML = ""; // clears list if anything is there
         // loop to parse data and add to items to list:
         for(let item of data.medicines) {
             // error handling for null items name/price
@@ -28,7 +31,6 @@ async function getMeds() {
                 continue; // skip to next item
             }
 
-            const list = document.getElementById('medicines');
             const li = document.createElement('li');
             
             li.textContent = `${item.name} - $${item.price}`;
@@ -55,20 +57,19 @@ async function getMeds() {
 function searchMedicine() {
 const name = document.getElementById('search-medicine').value;
 
-// retrieve response then 
+// retrieve response then do this, no response, then catch
 fetch(`http://localhost:8000/medicines/${encodeURIComponent(name)}`)
     .then(response => response.json())
     .then(data => {
-        if (!data || !data.name || data.name == "") {
-            if(data.name == "") {console.error('Null Item', item.name, item.price);}
-            else {console.error("No item found in data", name)}
-
-            alert('Medicine not found.');
+        if (data.error || data.name == "") {
+            console.error(data.error);
+            alert(data.error);
             return;
         }
         // Assuming medicine name found but has no price
         if(data.price == null){
-            alert(`Medice: ${data.name} -- NO PRICE INFORMATION FOUND`)
+            alert(`Medicine: ${data.name} -- NO PRICE INFORMATION FOUND`)
+            return;
         }
 
         // Assuming safe, parse data and give alert with answer
@@ -92,20 +93,22 @@ function updateMedicine() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message);
-        } else if (data.error) {
-            alert(data.error);
-        }
-    })
-    .catch(error => {
-        alert('Error updating medicine.');
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                getMeds();
+                alert(data.message);
+            } else if (data.error) {
+                alert(data.error);
+            }
+        })
+        .catch(error => {
+            alert('Error updating medicine.');
+        });
 }
+
 // create med
-async function createMedicine(params) {
+async function createMedicine() {
     const name = document.getElementById('medicine-name-create').value;
     const price = document.getElementById('medicine-price-create').value;
     const formData = new FormData();
@@ -117,22 +120,64 @@ async function createMedicine(params) {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message);
-        } else if (data.error) {
-            alert(data.error);
-        }
-    })
-    .catch(error => {
-        alert('Error adding medicine.');
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                getMeds(); 
+                alert(data.message);
+            } else{
+                console.error('Error adding medicine to JSON')
+                throw new error('');
+            }
+        })
+        .catch(error => {
+            alert('Error adding medicine.');
+        });
+}
+
+//delte function
+function deleteItem() {
+    const name = document.getElementById('delete-medicine-id').value;
+    const formData = new FormData();
+    formData.append('name', name);
+    fetch('http://localhost:8000/delete', {
+            method: 'DELETE',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+            } else if (data.error) {
+                throw new Error(data.error);
+            }
+            getMeds()  // Refresh the list
+        })
+        .catch(error => {
+            alert(`Error deleting medicine. ${error}`);
+        });  
 }
 
 // average funciton
 async function avgCalc(){
+    fetch('http://localhost:8000/avg', {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.error){
+            throw new Error(data.error);
+        }
+        if(data.message){
+            console.log(data);
+            alert(data.message);
+        }
 
+    }).catch(error => {
+        console.error(error);
+        alert(`Error fetching avg med price:`);
+    });
+        
 }
 
 document.addEventListener('DOMContentLoaded', function() {

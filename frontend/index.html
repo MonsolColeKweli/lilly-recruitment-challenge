@@ -105,12 +105,27 @@
                     <div class="card shadow w-100">
                         <div class="card-body">
                             <h5 class="card-title">Delete Medicine</h5>
-                            <form id="delete-medicine-form" action="http://localhost:8000/delete" method="DELETE">
+                            <form id="delete-medicine-form" onsubmit="event.preventDefault(); deleteItem();">
                                 <div class="mb-3">
                                     <label for="delete-medicine-id" class="form-label">Medicine Name:</label>
                                     <input type="text" class="form-control" id="delete-medicine-id" name="delete-medicine-id" placeholder="Enter Medicine Name Here" required>
                                 </div>
                                 <button type="submit" class="btn btn-danger w-100">Delete Medicine</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Average Functions Form Card -->
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow w-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Average Price Functions</h5>
+                            <form id="average-functions-form" onsubmit="event.preventDefault();">
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-info w-100 mb-2" onclick="calculateAveragePrice()">Calculate Average Price</button>
+                                    <button type="button" class="btn btn-secondary w-100" onclick="calculateMedianPrice()">Calculate Median Price</button>
+                                </div>
+                                <div id="average-functions-result" class="mt-2 text-center"></div>
                             </form>
                         </div>
                     </div>
