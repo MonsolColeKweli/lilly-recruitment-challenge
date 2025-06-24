@@ -148,8 +148,8 @@ def avg_med_price():
             count += 1
         if count == 0:
             return {"error": "No medicines found"}
-        average_price = total_price / count
-        return {"message": f"Total Price Calculated successfully: $ ${average_price}"}
+        average_price = round(total_price / count, 2) # ensure number does not exceed 2 decimals
+        return {"message": f"Total Price Calculated successfully: ${average_price}"}
             
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
